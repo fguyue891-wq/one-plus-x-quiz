@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="1+X刷题">
+  <meta name="description" content="1+X医药商品经营与管理随机刷题网页">
+  <title>1+X随机刷题</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar" id="topbar">
+      <button class="icon-btn" id="backBtn" type="button" aria-label="返回">←</button>
+      <div class="topbar-title" id="topTitle">1+X随机刷题</div>
+      <button class="icon-btn" id="homeBtn" type="button" aria-label="首页">⌂</button>
+    </header>
+
+    <main>
+      <section class="screen active" id="screen-home">
+        <div class="home-hero">
+          <div class="hero-kicker">医药商品经营与管理</div>
+          <h1>1+X随机刷题</h1>
+          <p>支持随机 100 题和按题型顺序刷题。每道题确认后立即显示答案与解析，所有模式共用刷题进度。</p>
+          <div class="hero-actions">
+            <button class="primary-btn hero-btn" id="startBtn" type="button">开始随机 100 题</button>
+            <button class="secondary-btn hero-secondary" id="sequentialBtn" type="button">顺序刷题 · 按题型</button>
+          </div>
+        </div>
+
+        <div class="content-wrap home-content">
+          <button class="resume-card hidden" id="resumeBtn" type="button">
+            <div>
+              <span class="resume-label">继续上次练习</span>
+              <strong id="resumeTitle">已完成 0 / 100</strong>
+            </div>
+            <span class="resume-arrow">→</span>
+          </button>
+
+          <div class="overall-progress-card">
+            <div class="overall-progress-head">
+              <span>全部题库刷题进度</span>
+              <strong id="overallProgressText">0 / 390</strong>
+            </div>
+            <div class="progress-track"><div class="progress-bar" id="overallProgressBar"></div></div>
+            <small>随机刷题和顺序刷题做过的题都会计入</small>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span>题库总数</span>
+              <strong id="statBank">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>错题本</span>
+              <strong id="statWrong">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>练习次数</span>
+              <strong id="statHistory">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>最近成绩</span>
+              <strong id="latestScore">--</strong>
+            </div>
+          </div>
+
+          <div class="menu-grid">
+            <button class="menu-card menu-card-wide" id="sequentialMenuBtn" type="button">
+              <span class="menu-icon">序</span>
+              <span><strong>顺序刷题</strong><small>单选、多选、配伍分模块推进</small></span>
+            </button>
+            <button class="menu-card" id="wrongBookBtn" type="button">
+              <span class="menu-icon">错</span>
+              <span><strong>错题回顾</strong><small>按题目查看答案与解析</small></span>
+            </button>
+            <button class="menu-card" id="historyBtn" type="button">
+              <span class="menu-icon">记</span>
+              <span><strong>练习记录</strong><small>保存每次成绩和错题</small></span>
+            </button>
+          </div>
+
+          <div class="notice-card">
+            <strong>使用提示</strong>
+            <p>iPhone 请用 Safari 打开，点“分享”→“添加到主屏幕”。使用本地 HTTP 访问时，记录保存更稳定。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-quiz">
+        <div class="quiz-progress-wrap">
+          <div class="quiz-progress-meta">
+            <span id="quizProgressText">1 / 100</span>
+            <span id="quizTypeText">单选题</span>
+          </div>
+          <div class="progress-track"><div class="progress-bar" id="quizProgressBar"></div></div>
+        </div>
+
+        <div class="content-wrap quiz-content">
+          <article class="question-card">
+            <div class="question-meta" id="questionMeta">第 1 题</div>
+            <h2 class="question-stem" id="questionStem"></h2>
+            <div class="options-list" id="optionsList"></div>
+            <div class="answer-feedback hidden" id="answerFeedback"></div>
+          </article>
+        </div>
+
+        <div class="quiz-footer">
+          <div class="selection-hint" id="selectionHint">请选择答案</div>
+          <button class="primary-btn" id="confirmBtn" type="button" disabled>确认答案</button>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-sequential">
+        <div class="content-wrap page-content">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">顺序刷题</span>
+              <h2>按题型分模块</h2>
+              <p>系统优先继续每类未刷过的题目，随机模式做过的题也会计入各模块进度。</p>
+            </div>
+          </div>
+          <div class="module-summary">
+            <div><span>全部进度</span><strong id="sequentialOverallText">0 / 390</strong></div>
+            <div class="progress-track"><div class="progress-bar" id="sequentialOverallBar"></div></div>
+          </div>
+          <div class="module-list" id="sequentialModules"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-result">
+        <div class="content-wrap result-content">
+          <div class="result-hero">
+            <div class="score-ring" id="scoreRing"><strong id="resultScore">0%</strong><span>正确率</span></div>
+            <h2 id="resultTitle">练习完成</h2>
+            <p id="resultSub">本次成绩已保存到本机</p>
+          </div>
+
+          <div class="result-metrics">
+            <div><span>答对</span><strong id="resultCorrect">0</strong></div>
+            <div><span>答错</span><strong id="resultWrong">0</strong></div>
+            <div><span>用时</span><strong id="resultTime">0分</strong></div>
+          </div>
+
+          <div class="section-head">
+            <div><h3>本次错题</h3><p id="resultWrongHint">点击题目可查看答案与解析</p></div>
+          </div>
+          <div class="question-list" id="resultWrongList"></div>
+
+          <div class="result-actions">
+            <button class="primary-btn" id="resultNewBtn" type="button">再练一组随机 100 题</button>
+            <button class="secondary-btn" id="resultHomeBtn" type="button">返回首页</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-wrong">
+        <div class="content-wrap page-content">
+          <div class="page-heading">
+            <div><span class="eyebrow">错题本</span><h2>错题回顾</h2><p>累计错题 <strong id="wrongCount">0</strong> 道，答对后不会自动移除，可点击“已掌握”。</p></div>
+          </div>
+          <div class="filter-row" id="wrongFilters">
+            <button class="filter-chip active" data-filter="all" type="button">全部</button>
+            <button class="filter-chip" data-filter="single" type="button">单选</button>
+            <button class="filter-chip" data-filter="multiple" type="button">多选</button>
+            <button class="filter-chip" data-filter="matching" type="button">配伍</button>
+            <button class="filter-chip danger" data-filter="clear" type="button">清空</button>
+          </div>
+          <div class="question-list" id="wrongList"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-review">
+        <div class="content-wrap page-content review-content">
+          <div class="question-meta" id="reviewMeta">错题回顾</div>
+          <h2 class="question-stem review-stem" id="reviewStem"></h2>
+          <div class="options-list review-options" id="reviewOptions"></div>
+          <div class="explanation-card">
+            <div class="explanation-title"><span>解析</span><strong id="reviewAnswer">正确答案</strong></div>
+            <p id="reviewExplanation"></p>
+          </div>
+          <div class="review-stats" id="reviewStats"></div>
+          <div class="review-actions">
+            <button class="secondary-btn" id="masteredBtn" type="button">已掌握，移出错题本</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-history">
+        <div class="content-wrap page-content">
+          <div class="page-heading">
+            <div><span class="eyebrow">本机记录</span><h2>练习记录</h2><p>记录只保存在当前浏览器。建议定期导出备份。</p></div>
+          </div>
+          <div class="history-tools">
+            <button class="secondary-btn small" id="exportBtn" type="button">导出记录</button>
+            <button class="secondary-btn small" id="importBtn" type="button">导入记录</button>
+            <input class="hidden" id="importFile" type="file" accept="application/json">
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
